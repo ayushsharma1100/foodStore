@@ -1,0 +1,26 @@
+"use client"
+import { useLoadingStore } from "@/app/store";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+
+export default function LoginLogout() {
+    let session = useSession();
+    let {setLoading} = useLoadingStore();
+    console.log(session);
+    return (
+        <>
+            {session.status === 'unauthenticated' &&<nav className="flex gap-6 items-center font-semibold text-gray-500">
+                <Link onClick={()=>setLoading(true)} href={'/login'}>Login</Link>
+                <Link onClick={()=>setLoading(true)} href={'/register'} className="px-8 py-2 bg-primary text-white rounded-full">
+                    Register
+                </Link>
+            </nav>}
+            {session.status === 'authenticated' && <nav className="flex gap-6 items-center font-semibold text-gray-500">
+                <button className="px-8 py-2 bg-primary text-white rounded-full" onClick={()=>{signOut({callbackUrl: '/login'});}}>Logout</button>
+            </nav>}
+            {/* {session.status === 'loading' && <nav className="flex gap-6 items-center font-semibold text-gray-500">
+                <button className="flex gap-6 items-center font-semibold text-gray-500 border-0" disabled={true}>Loading...</button>
+            </nav>} */}
+        </>
+    );
+}

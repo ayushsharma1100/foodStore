@@ -6,9 +6,12 @@ section.hero {
     @apply grid;
     grid-template-columns: .4fr .6fr;
 }
+span.error {
+    @apply text-red-600 m-0 text-sm;
+}
 
 input[type='email'], input[type='password'], input[type='text'] {
-    @apply block w-full my-2 p-2;
+    @apply block w-full mt-2 p-2;
     @apply border border-gray-300 bg-gray-100 rounded-lg
 }
 
@@ -18,5 +21,5 @@ button {
 }
 
 button[type='submit'], .submit {
-    @apply bg-primary text-white border-0
+    @apply bg-primary text-white border-0 mt-2
 }
