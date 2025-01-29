@@ -11,7 +11,7 @@ const loaderContainerStyle = {
   alignItems: "center",
   justifyContent: "center",
   zIndex: 1000,
-  backgroundColor: "rgba(0, 0, 0, 0.3)",
+  backgroundColor: "rgba(0, 0, 0, 0.1)",
 };
 
 const loaderStyle = {

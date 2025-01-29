@@ -1,7 +1,5 @@
-"use client"
 import Link from "next/link";
 import LoginLogout from "./LoginLogout";
-import { SessionProvider } from "next-auth/react";
 
 export default function Header() {
   return (
@@ -13,9 +11,7 @@ export default function Header() {
           <Link href={''}>About</Link>
           <Link href={''}>Contact</Link>
         </nav>
-        <SessionProvider>
-          <LoginLogout />
-        </SessionProvider>
+        <LoginLogout />
       </header>
   )
 }

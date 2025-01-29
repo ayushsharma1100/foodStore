@@ -6,6 +6,10 @@ import Link from "next/link";
 export default function LoginLogout() {
     let session = useSession();
     let {setLoading} = useLoadingStore();
+    let userName = session?.data?.user?.name || session?.data?.user?.email;
+    if(userName && userName.includes(' ')) {
+        userName = userName.split(' ')[0];
+    }
     console.log(session);
     return (
         <>
@@ -16,6 +20,7 @@ export default function LoginLogout() {
                 </Link>
             </nav>}
             {session.status === 'authenticated' && <nav className="flex gap-6 items-center font-semibold text-gray-500">
+                <Link className="whitespace-nowrap" onClick={()=>setLoading(true)} href={'/profile'}>Hello, {userName}</Link>
                 <button className="px-8 py-2 bg-primary text-white rounded-full" onClick={()=>{signOut({callbackUrl: '/login'});}}>Logout</button>
             </nav>}
             {/* {session.status === 'loading' && <nav className="flex gap-6 items-center font-semibold text-gray-500">

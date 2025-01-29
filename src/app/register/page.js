@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function RegisterPage() {
     let router = useRouter();
@@ -12,7 +13,6 @@ export default function RegisterPage() {
         password: ''
     });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
 
     const handleChange = (e)=>{
         setFormData(prevState=>({...prevState, [e.target.name]: e.target.value}));
@@ -23,7 +23,7 @@ export default function RegisterPage() {
         try{
             setLoading(true);
             if(!formData.email || !formData.password) {
-                setError('Enter email and password!');
+                toast.error('Please enter email and password', {position: 'bottom-left'});
                 return;
             }
             let res = await fetch('/api/register', {
@@ -34,14 +34,15 @@ export default function RegisterPage() {
                 body: JSON.stringify(formData)
             })
             res = await res.json();
-            res?.msg === 'success' ? setError('') : setError(res.msg);
+            res?.msg !== 'success' && toast.error(res.msg, {position: 'bottom-left'});
             await signIn('credentials', {...formData, redirect: false});
             console.log(res);
+            toast.success('User registered!', {position: 'bottom-left'});
             router.push("/");
         }
         catch(error) {
             console.log('Error uploading user...', error);
-            setError('something went wrong')
+            toast.error('Something went wrong!', {position: 'bottom-left'});
         }
         finally {
             setLoading(false);
@@ -58,7 +59,6 @@ export default function RegisterPage() {
                 <form className="max-w-xs mx-auto mt-8" onSubmit={handleSubmit}>
                     <input type="email" name="email" id="" placeholder="Email" value={formData.email} onChange={handleChange} />
                     <input type="password" name="password" id="" placeholder="Password" value={formData.password} onChange={handleChange} />
-                    <span className="error">{error}</span>
                     <button type="submit" disabled={loading}>Register</button>
                     <div className="text-gray-500 text-center my-2">or login with provider</div>
                     <button type="button" onClick={()=>signIn('google', {callbackUrl: '/'})} className="flex items-center justify-center gap-1"><Image src={'/google.png'} alt="" height={24} width={24} />Login with google</button>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import {signIn} from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
     let router = useRouter();
@@ -12,7 +13,6 @@ export default function LoginPage() {
         password: ''
     });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
 
     const handleChange = (e)=>{
         setFormData(prevState=>({...prevState, [e.target.name]: e.target.value}));
@@ -23,17 +23,20 @@ export default function LoginPage() {
         try{
             setLoading(true);
             if(!formData.email || !formData.password) {
-                setError('Enter email and password!');
+                toast.error('Enter email and password!', {position: 'bottom-left'})
                 return;
             }
             let user = await signIn('credentials', {...formData, redirect: false});
             console.log(user);
-            if(user.error) setError(user.error);
-            else router.push('/');
+            if(user.error) toast.error(user.error, {position: 'bottom-left'});
+            else {
+                toast.success('Logged in successfully', {position: 'bottom-left'});
+                router.push('/');
+            }
         }
         catch(error) {
             console.log('Error login user...', error);
-            setError('something went wrong')
+            toast.error('Something went wrong!', {position: 'bottom-left'})
         }
         finally {
             setLoading(false);
@@ -50,7 +53,6 @@ export default function LoginPage() {
                 <form className="max-w-xs mx-auto mt-8" onSubmit={handleSubmit}>
                     <input type="email" name="email" id="" placeholder="Email" value={formData.email} onChange={handleChange} />
                     <input type="password" name="password" id="" placeholder="Password" value={formData.password} onChange={handleChange} />
-                    <span className="error">{error}</span>
                     <button type="submit" disabled={loading}>Login</button>
                     <div className="text-gray-500 text-center my-2">or login with provider</div>
                     <button type="button" onClick={()=>signIn('google', {callbackUrl: '/'})} className="flex items-center justify-center gap-1"><Image src={'/google.png'} alt="" height={24} width={24} />Login with google</button>

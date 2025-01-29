@@ -7,6 +7,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -51,14 +52,22 @@ export const authOptions = {
     strategy: "jwt",  // Use "database" if storing sessions in MongoDB
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, trigger, user, session }) {
       if (user) {
         token.id = user.id;
+        token.image = user.image || '';
+      }
+      if(trigger === 'update' && session?.name) {
+        token.name = session.name
+      }
+      if(trigger === 'update' && session?.image) {
+        token.image = session.image
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.user.image = token.image;
       return session;
     },
   },
