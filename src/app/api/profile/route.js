@@ -5,8 +5,9 @@ export async function PUT(req) {
     try{
         let body = await req.json();
         console.log(body.data);
-        console.log({email: body.data.email}, {name: body.data.name})
-        let updatedUser = await User.updateOne({email: body.data.email}, {name: body.data.name});
+        let email = body.data.email;
+        delete body.data.email;
+        let updatedUser = await User.updateOne({email}, body.data);
         return NextResponse.json({msg: 'Updated successfully', user: updatedUser});
     }
     catch(error) {

@@ -2,15 +2,20 @@
 import { useLoadingStore } from "@/app/store";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function LoginLogout() {
     let session = useSession();
+    const [userName, setUserName] = useState('');
     let {setLoading} = useLoadingStore();
-    let userName = session?.data?.user?.name || session?.data?.user?.email;
-    if(userName && userName.includes(' ')) {
-        userName = userName.split(' ')[0];
-    }
-    console.log(session);
+
+    useEffect(()=>{
+        let temp = session?.data?.user?.name || session?.data?.user?.email;
+        if(temp && temp.includes(' ')) {
+            temp = temp.split(' ')[0];
+        }
+        setUserName(temp);
+    }, [session])
     return (
         <>
             {session.status === 'unauthenticated' &&<nav className="flex gap-6 items-center font-semibold text-gray-500">

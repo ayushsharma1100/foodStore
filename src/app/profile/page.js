@@ -8,18 +8,25 @@ import { toast } from "react-toastify";
 
 export default function ProfilePage() {
     let {data:session, status, update} = useSession();
-    console.log(session)
     let email = session?.user?.email || '';
     const [formData, setFormData] = useState({
         name: '',
-        image: ''
+        image: '',
+        phone: '',
+        city: '',
+        postalCode: '',
+        address: '',
+        country: ''
     })
     const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
-        // console.log(session);
-        setFormData({...formData, name: session?.user?.name, image: session?.user?.image})
+        setFormData(session?.user)
     }, [session])
+
+    function handleFormChange(e) {
+        setFormData(prevState=>({...prevState, [e.target.name]: e.target.value}));
+    }
 
     async function handleInfoSave(e) {
         try{
@@ -38,9 +45,11 @@ export default function ProfilePage() {
             })
             if(response.ok) {
                 toast.success('Updated successfully', {position: 'bottom-left'});
-                console.log(formData.name)
-                let res = await update({name: formData.name});
-                console.log(res)
+                let temp = {...session.user};
+                for(let key of Object.keys(formData)) {
+                    temp[key] = formData[key];
+                }
+                await update(temp);
             }
         }
         catch(error) {
@@ -66,7 +75,7 @@ export default function ProfilePage() {
                 });
                 if(res.ok) {
                     res = await res.json();
-                    await update({image: res?.result?.secure_url || formData.image})
+                    await update({...session.user, image: res?.result?.secure_url || formData.image})
                     console.log(res);
                     toast('Uploaded successfully!', {position: 'bottom-left'});
                 }
@@ -86,18 +95,36 @@ export default function ProfilePage() {
             {loading && <Loader />}
             <section className="mt-8">
                 <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
-                <form className="max-w-sm mx-auto" onSubmit={handleInfoSave}>
-                    <div className="flex gap-4 items-center">
+                <form className="max-w-md mx-auto labelMargin" onSubmit={handleInfoSave}>
+                    <div className="flex gap-4 items-start">
                         <div className="flex flex-col items-start justify-center">
-                            <Image className="rounded-lg w-full h-full mb-2" width={124} height={124} objectFit="contain" src={formData.image} alt="Avatar" />
+                            <Image className="rounded-lg w-full h-full my-2" width={134} height={134} src={formData?.image} alt="Avatar" />
                             <label className="w-min mx-auto">
                                 <input type="file" className="hidden" onChange={uploadImage} />
                                 <span type="button" className="ms-auto px-5 py-1 border border-slate-400 rounded-lg">Edit</span>
                             </label>
                         </div>
                         <div className="grow">
-                            <input type="text" value={formData.name} onChange={e=>setFormData({...formData, name: e.target.value})} placeholder="Enter full name" />
+                            <label>Name</label>
+                            <input type="text" name="name" value={formData?.name} onChange={handleFormChange} placeholder="Enter full name" />
+                            <label>Email</label>
                             <input type="email" value={email} disabled />
+                            <label>Phone</label>
+                            <input type="tel" name="phone" value={formData?.phone} onChange={handleFormChange} placeholder="Enter phone" />
+                            <label>Address</label>
+                            <input type="text" name="address" value={formData?.address} onChange={handleFormChange} placeholder="Enter address" />
+                            <div className="flex gap-4">
+                                <div>
+                                    <label>Pin Code</label>
+                                    <input type="text" name="postalCode" value={formData?.postalCode} onChange={handleFormChange} placeholder="Enter Pin Code" />
+                                </div>
+                                <div>
+                                    <label>City</label>
+                                    <input type="text" name="city" value={formData?.city} onChange={handleFormChange} placeholder="Enter City" />
+                                </div>
+                            </div>
+                            <label>Country</label>
+                            <input type="text" name="country" value={formData?.country} onChange={handleFormChange} placeholder="Enter Country" />
                             <button type="submit">Save</button>
                         </div>
                     </div>

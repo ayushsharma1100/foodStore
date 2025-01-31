@@ -11,11 +11,11 @@ span.error {
     @apply text-red-600 m-0 text-sm;
 }
 
-input[type='email'], input[type='password'], input[type='text'] {
+input[type='email'], input[type='password'], input[type='tel'], input[type='text'] {
     @apply block w-full mt-2 p-2;
     @apply border border-gray-300 bg-gray-100 rounded-lg text-gray-600
 }
-input[type='email']:disabled, input[type='password']:disabled, input[type='text']:disabled {
+input[type='email']:disabled, input[type='password']:disabled, input[type='tel']:disabled, input[type='text']:disabled {
     @apply border border-gray-300 bg-gray-300 text-gray-600 rounded-lg cursor-not-allowed
 }
 
@@ -29,4 +29,12 @@ button {
 
 button[type='submit'], .submit {
     @apply bg-primary text-white border-0 mt-2
+}
+
+label {
+    @apply text-xs text-gray-500
+}
+
+.labelMargin input {
+    margin-top: 0;
 }
