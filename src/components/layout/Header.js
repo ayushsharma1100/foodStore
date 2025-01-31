@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LoginLogout from "./LoginLogout";
 
 export default function Header() {
   return (
@@ -10,12 +11,7 @@ export default function Header() {
           <Link href={''}>About</Link>
           <Link href={''}>Contact</Link>
         </nav>
-        <nav className="flex gap-6 items-center font-semibold text-gray-500">
-          <Link href={'/login'}>Login</Link>
-          <Link href={'/register'} className="px-8 py-2 bg-primary text-white rounded-full">
-              Register
-          </Link>
-        </nav>
+        <LoginLogout />
       </header>
   )
 }
