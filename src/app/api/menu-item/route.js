@@ -1,7 +1,9 @@
 import MenuItem from "@/modals/MenuItem";
+import mongoose from "mongoose";
 
 export async function POST(req) {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let body = await req.json();
         let menuItem = await MenuItem.create(body);
         return Response.json({msg: 'Created successfully', menuItem});
@@ -14,6 +16,7 @@ export async function POST(req) {
 
 export async function GET(req) {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let { searchParams } = new URL(req.url);
         const id = searchParams.get('id')
         let items = id ? await MenuItem.findById(id) : await MenuItem.find();
@@ -27,6 +30,7 @@ export async function GET(req) {
 
 export async function PUT(req) {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let body = await req.json();
         let menuItem = await MenuItem.findByIdAndUpdate(body?._id, body);
         return Response.json({msg: 'Updated successfully', menuItem});
@@ -39,6 +43,7 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let { searchParams } = new URL(req.url);
         const id = searchParams.get('id')
         await MenuItem.findByIdAndDelete(id);

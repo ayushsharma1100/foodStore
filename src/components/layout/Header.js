@@ -10,8 +10,8 @@ export default function Header() {
           <Link className="text-primary text-3xl font-semibold" href={'/'}>El Pizza</Link>
           <Link href={'/'}>Home</Link>
           <Link href={'/menu'}>Menu</Link>
-          <a href={'#about'}>About</a>
-          <a href={'#contact'}>Contact</a>
+          <a href={'/#about'}>About</a>
+          <a href={'/#contact'}>Contact</a>
         </nav>
         <div>
           <LoginLogout />

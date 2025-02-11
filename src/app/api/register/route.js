@@ -1,7 +1,10 @@
 import User from "@/modals/User";
 import { genSaltSync, hashSync } from "bcryptjs";
+import mongoose from "mongoose";
+
 export async function POST(req) {
     try {
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let data = await req.json();
         let salt = genSaltSync(6);
         let hashedPass = hashSync(data.password, salt);

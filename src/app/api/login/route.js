@@ -1,8 +1,10 @@
 import User from "@/modals/User";
 import { compareSync } from "bcryptjs";
+import mongoose from "mongoose";
 
 export async function POST(req) {
     try {
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let data = await req.json();
         let user = await User.findOne({email: data.email});
         if(!user) return Response.json({msg: 'Email or password not correct'});

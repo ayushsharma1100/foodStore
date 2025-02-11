@@ -1,7 +1,9 @@
 import {v2 as cloudinary} from 'cloudinary'
+import mongoose from "mongoose";
 
 export async function POST(req) {
     try {
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let data = await req.formData();
         let file = data.get('file');
         if (!file) {

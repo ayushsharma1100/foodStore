@@ -1,7 +1,9 @@
 import Category from "@/modals/Category";
+import mongoose from "mongoose";
 
 export async function POST(req) {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let body = await req.json();
         let category = await Category.create(body);
         return Response.json({msg: 'Created successfully', category});
@@ -14,6 +16,7 @@ export async function POST(req) {
 
 export async function GET() {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let categories = await Category.find();
         return Response.json(categories);
     }
@@ -25,6 +28,7 @@ export async function GET() {
 
 export async function PUT(req) {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let body = await req.json();
         let category = await Category.findByIdAndUpdate(body._id, {name: body.name});
         return Response.json({msg: 'Updated successfully', category});
@@ -37,6 +41,7 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
     try{
+        let connection = await mongoose.connect(process.env.MONGO_URI);
         let {searchParams} = new URL(req.url);
         const id = searchParams.get('id');
         let categories = await Category.findByIdAndDelete(id);

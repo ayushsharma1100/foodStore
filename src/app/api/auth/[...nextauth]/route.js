@@ -2,6 +2,7 @@ import client from '@/libs/MongoAdapter';
 import User from '@/modals/User';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { compareSync } from 'bcryptjs';
+import mongoose from 'mongoose';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from "next-auth/providers/google";
@@ -23,7 +24,7 @@ export const authOptions = {
         console.log("Authorizing user:", credentials.email);
 
         // Ensure MongoDB connection
-        await client.connect();
+        await mongoose.connect(process.env.MONGO_URI);
         
         const user = await User.findOne({ email: credentials.email });
         if (!user) {
