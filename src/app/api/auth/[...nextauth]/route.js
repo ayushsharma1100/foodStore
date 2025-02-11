@@ -38,12 +38,9 @@ export const authOptions = {
         }
 
         console.log("User authenticated:", user);
+        let res = {...user._doc, id: user._id.toString()}
 
-        return {
-          id: user._id.toString(),  // Convert MongoDB ObjectId to string
-          name: user.name,
-          email: user.email
-        };
+        return res;
       },
     }),
   ],

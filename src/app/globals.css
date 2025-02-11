@@ -1,4 +1,3 @@
-@import "react-toastify/dist/ReactToastify.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,30 +10,38 @@ span.error {
     @apply text-red-600 m-0 text-sm;
 }
 
-input[type='email'], input[type='password'], input[type='tel'], input[type='text'] {
+select,input[type='email'], input[type='password'], input[type='number'], input[type='tel'], input[type='text'] {
     @apply block w-full mt-2 p-2;
     @apply border border-gray-300 bg-gray-100 rounded-lg text-gray-600
 }
-input[type='email']:disabled, input[type='password']:disabled, input[type='tel']:disabled, input[type='text']:disabled {
+input[type='email']:disabled, input[type='password']:disabled, input[type='number']:disabled, input[type='tel']:disabled, input[type='text']:disabled {
     @apply border border-gray-300 bg-gray-300 text-gray-600 rounded-lg cursor-not-allowed
 }
 
 form button {
     @apply w-full
 }
-button {
-    @apply text-center text-gray-700 font-semibold;
+button, .button {
+    @apply flex justify-center gap-3 text-center text-gray-700 font-semibold;
     @apply border border-gray-300 rounded-lg py-2 px-6;
 }
 
 button[type='submit'], .submit {
-    @apply bg-primary text-white border-0 mt-2
+    @apply bg-primary text-white border-primary mt-2
 }
 
 label {
     @apply text-xs text-gray-500
 }
 
-.labelMargin input {
+.labelMargin input, .labelMargin select {
     margin-top: 0;
+}
+
+div.tabs > *.active {
+    @apply bg-primary text-white;
+}
+
+div.tabs > * {
+    @apply bg-gray-300 text-gray-500 rounded-full px-3 py-1;
 }

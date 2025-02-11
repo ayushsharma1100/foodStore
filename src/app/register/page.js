@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
     let router = useRouter();
