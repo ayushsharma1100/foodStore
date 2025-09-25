@@ -29,6 +29,9 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -52,4 +55,5 @@ jobs:
           app-name: 'food-store'
           slot-name: 'Production'
           package: .
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_10FA95D583884C65920E97778EACF55B }}
