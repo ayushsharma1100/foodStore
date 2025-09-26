@@ -36,11 +36,14 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
 
-      - name: Upload artifact for deployment
+      - name: Package app
+        run: zip -r app.zip . -x "*.git*" "*.github*" "node_modules/.cache/*"
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: .
+          name: app-zip
+          path: app.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,7 +53,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+          name: app-zip
+          path: .
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -59,4 +63,3 @@ jobs:
           slot-name: 'Production'
           package: app.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-
