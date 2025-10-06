@@ -19,7 +19,7 @@ jobs:
        contents: read
     env:
        MONGO_URI: ${{ secrets.MONGO_URI }}
-       CODE: ${{ secrets.NEXT_PUBLIC_CODE }}
+       NEXT_PUBLIC_CODE: ${{ secrets.NEXT_PUBLIC_CODE }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -59,6 +59,7 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
+
 
 
 
