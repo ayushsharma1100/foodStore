@@ -19,7 +19,7 @@ export default function Cart() {
     const handlePay = async () => {
     try {
       const userName = "ayush";
-
+      console.log(process.env, process.env.NEXT_PUBLIC_CODE);
       const apiUrl = `https://food-func-dnakhncnhudqbhhm.eastasia-01.azurewebsites.net/api/placeOrder-foodStore?name=${userName}&code=${process.env.NEXT_PUBLIC_CODE}`;
 
       const response = await fetch(apiUrl, {
