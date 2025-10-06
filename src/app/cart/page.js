@@ -16,6 +16,32 @@ export default function Cart() {
         setFormData({...formData, [e.target.name]: e.target.value})
     }
 
+    const handlePay = async () => {
+    try {
+      const userName = "ayush";
+
+      const apiUrl = `https://food-func-dnakhncnhudqbhhm.eastasia-01.azurewebsites.net/api/placeOrder-foodStore?name=${userName}&code=${process.env.NEXT_PUBLIC_CODE}`;
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to place order");
+      }
+
+      const data = await response.json();
+      console.log("Order placed successfully:", data);
+      alert("✅ Payment successful! Order placed.");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("❌ Something went wrong while placing the order.");
+    }
+  };
+
     let price = 0
     cart?.length > 0 && cart?.map(item=>price+= +totalPrice(item));
 
@@ -70,7 +96,7 @@ export default function Cart() {
                             </div>
                             <label>Country</label>
                             <input type="text" name="country" value={formData?.country} onChange={handleFormChange} placeholder="Enter Country" />
-                            <button type="submit" className="w-full">Pay ₹{price}</button>
+                            <button type="submit" onClick={handlePay} className="w-full">Pay ₹{price}</button>
                     </div>
                 </div>
             </section>
